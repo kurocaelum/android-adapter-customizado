@@ -2,9 +2,20 @@ package android.imd.adaptercustomizado
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
+import android.widget.AdapterView
 import android.widget.ListView
+import android.widget.Toast
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), AdapterView.OnItemClickListener {
+    override fun onItemClick(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+        val (modelo, ano) = veiculos[p2]
+
+        Toast.makeText(this, "$modelo - $ano", Toast.LENGTH_SHORT).show()
+
+        veiculos.remove(veiculos[p2])
+        adapter.notifyDataSetChanged()
+    }
 
     private val veiculos = mutableListOf(
         Veiculo("Onix", 2018, 1, true, true),
@@ -34,5 +45,7 @@ class MainActivity : AppCompatActivity() {
 
         adapter = VeiculoAdapter(this, veiculos)
         listView.adapter = adapter
+
+        listView.setOnItemClickListener(this)
     }
 }
